@@ -67,3 +67,42 @@ class Std2saga:
                             for ids in outputs]
 
         return generated_titles[0]
+    
+    
+    
+    
+#コード添削
+# import csv
+# import re
+# from transformers import T5ForConditionalGeneration, T5Tokenizer
+
+# class Std2saga:
+#     def __init__(self, model_name_or_path="sonoisa/t5-base-japanese", model_dir="model", max_input_length=64, max_target_length=64, csv_path='方言辞書.csv'):
+#         self.model_name_or_path = model_name_or_path
+#         self.model_dir = model_dir
+#         self.max_input_length = max_input_length
+#         self.max_target_length = max_target_length
+#         self.csv_path = csv_path
+#         self.brackets_pattern = re.compile(r"(^【[^】]*】)|(【[^】]*】$)")
+#         self.dictionary = None
+#         self.tokenizer = None
+#         self.trained_model = None
+
+#     def load_model(self):
+#         if not self.tokenizer or not self.trained_model:
+#             self.tokenizer = T5Tokenizer.from_pretrained(self.model_dir, is_fast=True)
+#             self.trained_model = T5ForConditionalGeneration.from_pretrained(self.model_dir)
+#             self.trained_model.eval()  # Set the model in evaluation mode
+
+#     def load_dictionary(self):
+#         if not self.dictionary:
+#             self.dictionary = self.create_dictionary_from_csv(self.csv_path)  # Load dictionary at the initialization
+
+#     # other methods are same as before
+
+#     def sagaben(self, text):
+#         self.load_model()
+#         self.load_dictionary()
+        
+#         # the remaining part of the code is the same
+
