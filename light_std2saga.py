@@ -4,7 +4,7 @@ from transformers import T5ForConditionalGeneration, T5Tokenizer
 
 class Std2saga:
     def __init__(self, model_name_or_path="sonoisa/t5-base-japanese", model_dir="model", max_input_length=64, max_target_length=64, csv_path='方言辞書.csv'):  #model、csv_pathのパス修正が必要
-        self.model_name_or_path = model_name_or_path
+        #self.model_name_or_path = model_name_or_path
         self.model_dir = model_dir
         self.max_input_length = max_input_length
         self.max_target_length = max_target_length
