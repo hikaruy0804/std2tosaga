@@ -82,7 +82,7 @@ class Std2saga:
 
     def create_dictionary_from_csv(self, csv_file_path):
         dictionary = {} 
-        with open(csv_file_path, encoding='shift_jis') as csvfile:  # Change 'utf-8' to 'shift_jis' 文字コードエラー注意
+        with open(csv_file_path, encoding='utf-8') as csvfile:  # Change 'utf-8' to 'shift_jis' 文字コードエラー注意
             reader = csv.reader(csvfile)
             next(reader)  # Skip header row
             for row in reader:
