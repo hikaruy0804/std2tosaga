@@ -24,7 +24,7 @@ def index():
 def chatbot():
     user_message = request.form["message"]
     try:
-        response = requests.post("http://localhost:8000/chatbot", #APIを提供するグローバルIPアドレスに修正
+        response = requests.post("http://localhost:8400/chatbot", #グローバルIPアドレスに修正
                                  json={"message": user_message})
         response.raise_for_status()
     except requests.exceptions.RequestException as err:
