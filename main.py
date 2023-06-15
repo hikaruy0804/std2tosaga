@@ -9,8 +9,8 @@ saga = Std2saga()
 class Message(BaseModel):
     message: str
 
-@app.post("/chatbot")
-async def chatbot(message: Message):
+@app.post("/sagaben")
+async def sagaben(message: Message):
     user_message = message.message
     response = saga.sagaben(str(user_message))
     return {

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for, request
 import requests
 # from std2saga import Std2saga
 # from light_std2saga import Std2saga
@@ -10,7 +10,8 @@ app = Flask(__name__)
 def index():
     return render_template("index.html", messages=[])
 
-# @app.route("/chatbot", methods=["POST"])
+#APIを仕様ない場合
+# @app.route("/sagaben", methods=["POST"])
 # def chatbot():
 #     user_message = request.form["message"]
 #     # Chatbotの処理（ここでは簡単に'test'を返す）
@@ -20,11 +21,12 @@ def index():
 #                             {"sender": "bot", "text": response}]
 #                            )
 
-@app.route("/chatbot", methods=["POST"])
-def chatbot():
+#APIによる返答
+@app.route("/sagaben", methods=["POST"])
+def trans_sagaben():
     user_message = request.form["message"]
     try:
-        response = requests.post("http://localhost:8400/chatbot", #グローバルIPアドレスに修正
+        response = requests.post("http://localhost:8000/sagaben", #グローバルIPとポート番号を修正
                                  json={"message": user_message})
         response.raise_for_status()
     except requests.exceptions.RequestException as err:
@@ -32,6 +34,21 @@ def chatbot():
         return render_template("index.html", messages=[{"sender": "bot", "text": "An error occurred while processing your request. Please try again later."}])
     else:
         return render_template("index.html", messages=response.json()["messages"])
+
+#T5の説明ページ
+@app.route("/t5explain")
+def index_t5explain():
+    return render_template("index-t5explain.html")
+
+#/sagabenにGETしたときのリダイレクト
+@app.route('/sagaben', methods=['GET'])
+def redirect_to_root():
+    return redirect(url_for('root'))
+
+#リダイレクト先の設定
+@app.route('/')
+def root():
+    return render_template("index.html", messages=[])
 
 if __name__ == "__main__":
     app.run(debug=True)
