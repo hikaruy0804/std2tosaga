@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>トランスフォーマー・サガ</title>  
+    <title>トランスフォーマーサガ</title>  
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -14,6 +14,7 @@
       #message-container {
         width: 80%;
         max-width: 800px;
+        height: 500px; /* 適切な高さに変更してください */
         margin: auto;
         margin-top: 0.1rem;
         margin-bottom: 0.1rem;
@@ -32,7 +33,7 @@
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        height: 400px;
+        height: 250px;
         overflow-y: auto;
       }
 
@@ -86,7 +87,7 @@
         border-radius: 50px;
         background-color: #007BFF;
         color: #fff;
-        font-size: 1.2rem;
+        font-size: 1.1rem;
         cursor: pointer;
         transition: 0.2s ease;
       }
@@ -95,22 +96,63 @@
         background-color: #0056b3;
       }
 
+      @media screen and (max-width: 720px) {
+      body {
+        font-size: 1.0rem; /* ボディのフォントサイズを大きくします */
+      }
+      #message-container{
+        width: 99%;
+      }
+      #message-box {
+        max-width: 100%;
+      }
+      .message {
+        padding: 20px; /* メッセージのパディングを大きくします */
+        margin-bottom: 20px; /* メッセージ間のマージンを大きくします */
+      }
+      #user-input {
+        width: 90%;  /* 入力欄の幅を大きくします */
+        height: 60px; /* 入力欄の高さを大きくします */
+        font-size: 1rem; /* 入力欄のフォントサイズを大きくします */
+      }
+      button[type="submit"] {
+        height: 60px; /* 送信ボタンの高さを大きくします */
+        font-size: 1.0rem; /* 送信ボタンのフォントサイズを大きくします */
+      }
+      }
+      /* 文字数制限 */
+      #remaining-characters.max {
+        color: #dd3535;
+      }
+
+      /*ページリンク*/
+      .container {
+        text-align: center;
+        margin-top: 0.5%;
+      }
+
     </style>
   </head>
   <body>
     <div id="message-container">
-      <h1>佐賀弁変換BOT</h1>
+      <h1>トランスフォーマーサガ</h1>
+      <!-- AIが標準語を佐賀弁に変換します。変換が完了するまで少し時間がかかります。 -->
+      <br><br>
       <div id="message-box">
         {% for message in messages %}
           <div class="message {{ message['sender'] }}-message">
             {{ message['text'] }}
           </div>
         {% endfor %}
-      </div>      
-      <form method="post" action="{{ url_for('chatbot') }}">
-        <input type="text" placeholder="ここに入力してください。" name="message" id="user-input" />
+      </div>
+      <p>100文字中あと <span id="remaining-characters"></span>文字までよかよ。</p>
+      <form method="post" action="{{ url_for('trans_sagaben') }}">
+        <input type="text" placeholder="AIが佐賀弁に変換するけん、こけー標準語の文章ば入力して変換ば押してくれ。" name="message" id="user-input" oninput="limitTextLength();">
         <button type="submit">変換</button>
       </form>
+    </div>
+    <div class="container">
+      <a href="/t5explain">モデルの説明</a>
     </div>
     
     <script>
@@ -140,6 +182,20 @@
       userInput.value = "";
       return true;
     }
+
+    // 文字数制限
+    const limitTextLength = () => {
+    let maxLength = 100; // 文字数の上限
+    let enteredCharacters = document.getElementById('user-input');
+    let remainingCharacters = document.getElementById('remaining-characters');
+    if (enteredCharacters.value.length > maxLength) {
+      enteredCharacters.value = enteredCharacters.value.substr(0, maxLength);
+      remainingCharacters.classList.add('max');
+    } else {
+      remainingCharacters.classList.remove('max');
+    }
+    remainingCharacters.textContent = maxLength - enteredCharacters.value.length;
+    };
     </script>
     
   </body>
