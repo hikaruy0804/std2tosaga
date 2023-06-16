@@ -2,6 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>トランスフォーマー・サガ</title>  
     <style>
       body {
@@ -118,6 +119,13 @@
           .image-container {
               flex-direction: column;
           }
+      }
+
+      @media screen and (max-width: 375px) {
+      body {
+      width: 375px;
+      overflow-x: auto;
+      }
       }
 
       /*ページリンク*/
