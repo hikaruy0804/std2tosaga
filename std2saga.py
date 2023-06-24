@@ -78,7 +78,7 @@ class Std2saga:
         return text
 
     def preprocess_body(self, text):
-        return self.normalize_text(text.replace("\n", " "))
+        return self.normalize_text(text.replace("\n", " ").replace("\r", " "))
 
     def create_dictionary_from_csv(self, csv_file_path):
         dictionary = {} 
@@ -88,7 +88,6 @@ class Std2saga:
             for row in reader:
                 dictionary[row[0]] = row[1]
         return dictionary
-
 
     def sagaben(self, text):
         # CSVファイルのパスを指定して辞書を読み込む
