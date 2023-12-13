@@ -1,0 +1,5 @@
+# add_darkrai.py
+cc.ja.300.bin
+model/
+__pycache__/
+flask/

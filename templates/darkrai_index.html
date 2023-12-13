@@ -12,6 +12,21 @@
         padding: 0;
         background-color: #efeded;
       }
+      .darkrai-overlay {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 9999; /* この値は他の要素のz-indexよりも大きくする */
+        pointer-events: none; /* 画像の上をクリックできるようにする */
+        opacity: 0.04;
+        background-image: url('static/images/darkrai.png');
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
+        background-size: 60%;
+      }
       #message-container {
         width: 80%;
         max-width: 700px;
@@ -28,7 +43,7 @@
         font-weight:bold;
         /* color: #37a15c; */
         text-align: center;
-        font-size: 1.5em;
+        font-size: 1.8em;
         /* margin-bottom: 1rem; */
       }
       #message-box {
@@ -42,26 +57,23 @@
         border-radius: 10px;
         /* margin-bottom: 1rem; */
       }
-      .message {
-        /* background-color: #f5f5f5;
-        color: #333; */
-        background-color: #16ABD1;
+      #message-box {
+    text-align: center;
+    }
+    .message {
+        background-color: #b55757;
         color: #f5f5f5;
-        margin-left: 0.2rem;
+        font-size: 1.6em;
         padding: 10px;
-        margin-bottom: 10px;
+        margin: 20px auto 10px auto; /* 上下のマージンを0、左右のマージンをautoに設定 */
         border-radius: 20px;
         max-width: 70%;
-      }
+        font-size: 1.5em; 
+        display: inline-block; /* メッセージをインラインブロック要素として扱い、text-alignで中央配置を可能にする */
+    }
       .bot-message {
         align-self: flex-start;
-      }
-      .user-message {
-        margin-right: 0.2rem;
-        margin-top: 0.5rem;
-        align-self: flex-end;
-        background-color: #44b06a;
-        color: #f5f5f5;
+        font-size: 1.3em;
       }
       form {
         display: flex;
@@ -72,7 +84,7 @@
       width: 100%;
       min-height: 40px;
       padding: 0.5rem;
-      font-size: 1rem;
+      font-size: 1.3rem;
       border: 1px solid #e0e0e0;
       border-radius: 10px;
       background-color: #F5F5F5;
@@ -90,7 +102,7 @@
       border: none;
       border-radius: 20px;
       /* background-color: 	#ede550; */
-      background-color: #16ABD1;
+      background-color: #868686;
       color: #fff;
       font-size: 1.1rem;
       cursor: pointer;
@@ -99,7 +111,7 @@
       }
       button[type="submit"]:hover {
         /* background-color: #b9b11a; */
-        background-color: #157f9a;
+        background-color: #585858;
       }
       .container {
         text-align: center;
@@ -116,56 +128,42 @@
   </head>
   <body>
     <div id="message-container">
-      <h1>Transformer SAGA</h1>
+      <h1>ダークライ構文</h1>
       <div id="message-box">
-        {% for message in messages %}
+        {% for message in messages_darkrai %}
           <div class="message {{ message['sender'] }}-message">
-            {{ message['text'] }}
+              {{ message['text'] }}
           </div>
         {% endfor %}
       </div>
-      <p>100文字中あと <span id="remaining-characters"></span>文字までよかよ。</p>
-      <form method="post" action="{{ url_for('trans_sagaben') }}">
-      <!-- <form method="post" action="{{ url_for('trans_sagaben') }}"> -->
-        <textarea placeholder="AIが佐賀弁に変換するけん、こけー標準語の文章ば入力して変換ば押してくれ。" name="message" id="user-input" oninput="limitTextLength();" rows="1"></textarea>
-        <button type="submit">変換</button>
+      <p>あと <span id="remaining-characters"></span>文字まで。</p>
+      <form method="post" onsubmit="return displayConvertedMessage();">
+          <textarea placeholder="その単語ダークライ構文にします。" name="message" id="user-input" oninput="limitTextLength();" rows="1"></textarea>
+          <button type="submit">変換</button>
       </form>
-    </div>
-    <div class="container">
-      <a href="/t5explain">モデルの説明</a>
-    </div>
-    
-    <script>
-    const user_message = "{{ user_message }}";
-    const message = "{{ message }}";
-    if (user_message) {
-      displayMessage(user_message, "user");
-    }
-    if (message) {
-      displayMessage(message, "bot");
-    }
+      <a href="https://dic.nicovideo.jp/a/vs%E3%83%80%E3%83%BC%E3%82%AF%E3%83%A9%E3%82%A4">ダークライ構文？？？</a>
+  </div>
+  <div class="darkrai-overlay"></div>
+  
+  <script>
+  const messages_darkrai = "{{ message_darkrai }}";
+  if (message_darkrai) {
+      displayMessage(message_darkrai, "bot-darkrai");
+  }
 
-    function displayMessage(message, sender) {
-      const messageBox = document.getElementById("message-box");
-      const messageElement = document.createElement("div");
-      messageElement.innerText = message;
-      messageElement.classList.add("message");
-      messageElement.classList.add(sender === "bot" ? "bot-message" : "user-message");
-      messageBox.appendChild(messageElement);
-      messageBox.scrollTop = messageBox.scrollHeight;  // Add this line to auto scroll to bottom
-    }
-
-    function sendMessage() {
-      const userInput = document.getElementById("user-input");
-      const message = userInput.value;
-      displayMessage(message, "user");
-      userInput.value = "";
-      return true;
-    }
-
+  function displayMessage(message, sender) {
+    const messageBox = document.getElementById("message-box");
+    const messageElement = document.createElement("div");
+    messageElement.innerText = message;
+    messageElement.classList.add("message-darkrai");
+    messageElement.classList.add(sender === "bot-darkrai" ? "bot-message-darkrai" : "user-message-darkrai");
+    messageBox.appendChild(messageElement);
+    messageBox.scrollTop = messageBox.scrollHeight;
+  }
+  
     // 文字数制限
     const limitTextLength = () => {
-    let maxLength = 100; // 文字数の上限
+    let maxLength = 10; // 文字数の上限
     let enteredCharacters = document.getElementById('user-input');
     let remainingCharacters = document.getElementById('remaining-characters');
     if (enteredCharacters.value.length > maxLength) {
